@@ -1,0 +1,153 @@
+body {
+  font-family: system-ui;
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+}
+
+.orbit {
+  --size: 12rem;
+  --speed: 120s;
+  .center-image {
+    width: var(--size);
+    position: relative;
+
+    img {
+      position: absolute;
+      transition: opacity 500ms;
+      z-index: 10;
+
+      &:not(:first-child):hover {
+        opacity: 0;
+      }
+    }
+  }
+
+  ul {
+    display: grid;
+    place-items: center;
+    width: var(--size);
+    height: var(--size);
+    position: relative;
+    transform-origin: center;
+    animation: orbit var(--speed) linear infinite;
+
+    &:hover {
+      animation-play-state: paused;
+      --rotating-play-state: paused;
+    }
+  }
+
+  li {
+    --border-radius: 50%;
+    --icon-bg: salmon;
+    --text-bg: blue;
+    position: absolute;
+    width: 8rem;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--border-radius);
+    text-align: center;
+    line-height: 1;
+    font-weight: 500;
+    color: var(--white-light);
+    display: grid;
+    place-items: center;
+
+    &:hover {
+      --throb-play-state: paused;
+    }
+
+    @for $i from 0 through 7 {
+      &:nth-child(#{$i + 1}) {
+        --throb-delay: #{100 * $i}ms;
+      }
+    }
+
+    & > * {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      animation: orbit var(--speed) reverse linear infinite,
+        throb 1s ease infinite alternate var(--throb-delay, 100ms);
+      animation-play-state: var(--rotating-play-state, running),
+        var(--throb-play-state, running);
+    }
+
+    > div {
+      background-color: var(--icon-bg);
+    }
+
+    > p {
+      background-color: var(--text-bg);
+      opacity: 0;
+      transition: opacity 500ms;
+    }
+
+    &:hover > p {
+      opacity: 1;
+    }
+  }
+
+  li:nth-child(1) {
+    --icon-bg: var(--blue-light);
+    --text-bg: var(--blue-dark);
+    transform: translate(15rem, 0);
+  }
+
+  li:nth-child(2) {
+    --icon-bg: var(--green-light);
+    --text-bg: var(--green-dark);
+    transform: translate(10rem, 10rem);
+  }
+
+  li:nth-child(3) {
+    --icon-bg: var(--pink-light);
+    --text-bg: var(--pink-dark);
+    transform: translate(0, 15rem);
+  }
+
+  li:nth-child(4) {
+    --icon-bg: var(--red-light);
+    --text-bg: var(--red-dark);
+    transform: translate(-10rem, 10rem);
+  }
+
+  li:nth-child(5) {
+    --icon-bg: var(--brown-light);
+    --text-bg: var(--brown-dark);
+    transform: translate(-15rem, 0);
+  }
+
+  li:nth-child(6) {
+    --icon-bg: var(--yellow-light);
+    --text-bg: var(--yellow-dark);
+    transform: translate(-10rem, -10rem);
+  }
+
+  li:nth-child(7) {
+    --icon-bg: var(--purple-light);
+    --text-bg: var(--purple-dark);
+    transform: translate(0, -15rem);
+  }
+
+  li:nth-child(8) {
+    --icon-bg: var(--orange-light);
+    --text-bg: var(--orange-dark);
+    transform: translate(10rem, -10rem);
+  }
+}
+
+@keyframes orbit {
+  100% {
+    rotate: 1turn;
+  }
+}
+
+@keyframes throb {
+  100% {
+    scale: 1.2;
+  }
+}
